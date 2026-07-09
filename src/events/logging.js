@@ -1,10 +1,11 @@
 const { Events, AuditLogEvent } = require('discord.js');
+const { getGuildConfig } = require('../supabase');
 
 module.exports = {
   name: Events.GuildAuditLogEntryCreate,
   async execute(auditLogEntry, guild) {
-    const channelId = process.env.LOG_CHANNEL_ID;
-    const channel = guild.channels.cache.get(channelId);
+    const logging = await getGuildConfig(guild.id, 'logging');
+    const channel = guild.channels.cache.get(logging?.channel_id);
 
     if (!channel) return;
 

@@ -1,0 +1,8 @@
+<h2 class="text-2xl mb-4">Select a Server</h2>
+<div class="grid gap-4">
+  <% user.guilds.forEach(guild => { %>
+    <a href="/dashboard/<%= guild.id %>" class="bg-gray-800 p-4 rounded-lg hover:bg-gray-700 block">
+      <%= guild.name %>
+    </a>
+  <% }) %>
+</div>

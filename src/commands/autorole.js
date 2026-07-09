@@ -1,20 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-
-const dataPath = path.join(__dirname, '..', 'data', 'autoroles.json');
-
-function loadAutoroles() {
-  if (!fs.existsSync(dataPath)) {
-    fs.writeFileSync(dataPath, '{}');
-    return {};
-  }
-  return JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-}
-
-function saveAutoroles(data) {
-  fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
-}
+const { supabase } = require('../supabase');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -28,9 +13,15 @@ module.exports = {
   async execute(interaction) {
     const role = interaction.options.getRole('role');
 
-    const autoroles = loadAutoroles();
-    autoroles[interaction.guildId] = role.id;
-    saveAutoroles(autoroles);
+    const { error } = await supabase.from('autorole').upsert({
+      guild_id: interaction.guildId,
+      role_id: role.id
+    });
+
+    if (error) {
+      await interaction.reply({ content: 'Failed to save autorole!', ephemeral: true });
+      return;
+    }
 
     await interaction.reply(`Autorole set! New members will receive ${role.name}`);
   }

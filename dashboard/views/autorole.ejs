@@ -1,0 +1,21 @@
+<h2 class="text-2xl mb-4">Auto Role</h2>
+<form class="bg-gray-800 p-6 rounded-lg" data-endpoint="/api/autorole/<%= guildId %>">
+  <div class="mb-4">
+    <label class="block mb-2">Auto Role ID (für neue Member)</label>
+    <input type="text" name="role_id" class="w-full p-2 bg-gray-700 rounded" placeholder="z.B. 123456789">
+  </div>
+  <button type="submit" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Speichern</button>
+</form>
+<script>
+fetch('/api/autorole/<%= guildId %>')
+  .then(r => r.json())
+  .then(data => document.querySelector('[name="role_id"]').value = data.role_id || '');
+document.querySelector('form').addEventListener('submit', e => {
+  e.preventDefault();
+  fetch(e.target.dataset.endpoint, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+  }).then(() => alert('Gespeichert!'));
+});
+</script>

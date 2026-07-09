@@ -1,0 +1,39 @@
+<h2 class="text-2xl mb-4">Auto Ping Rules</h2>
+<table class="w-full bg-gray-800 rounded-lg" id="rules-table">
+  <thead>
+    <tr class="border-b border-gray-700">
+      <th class="p-3 text-left">Keyword</th>
+      <th class="p-3 text-left">Role ID</th>
+      <th class="p-3 text-left">Channel ID</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+<form class="mt-4 bg-gray-800 p-4 rounded-lg" data-endpoint="/api/autoping/<%= guildId %>">
+  <div class="grid grid-cols-3 gap-2">
+    <input type="text" name="keyword" placeholder="Keyword" class="p-2 bg-gray-700 rounded" required>
+    <input type="text" name="role_id" placeholder="Role ID" class="p-2 bg-gray-700 rounded" required>
+    <input type="text" name="channel_id" placeholder="Channel ID" class="p-2 bg-gray-700 rounded" required>
+  </div>
+  <button type="submit" class="mt-2 bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Rule</button>
+</form>
+<script>
+fetch('/api/autoping/<%= guildId %>')
+  .then(r => r.json())
+  .then(rules => {
+    const tbody = document.querySelector('#rules-table tbody');
+    rules.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td class="p-3">${r.keyword}</td><td class="p-3">${r.role_id}</td><td class="p-3">${r.channel_id}</td>`;
+      tbody.appendChild(tr);
+    });
+  });
+document.querySelector('form').addEventListener('submit', e => {
+  e.preventDefault();
+  fetch(e.target.dataset.endpoint, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+  }).then(() => location.reload());
+});
+</script>

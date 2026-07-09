@@ -1,35 +1,23 @@
 const { Events } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-
-const autorolesPath = path.join(__dirname, '..', 'data', 'autoroles.json');
-const welcomeChannelId = process.env.WELCOME_CHANNEL_ID;
-
-function loadAutoroles() {
-  if (!fs.existsSync(autorolesPath)) return {};
-  return JSON.parse(fs.readFileSync(autorolesPath, 'utf8'));
-}
+const { getGuildConfig } = require('../supabase');
 
 module.exports = {
   name: Events.GuildMemberAdd,
   async execute(member) {
-    // Welcome message
-    if (welcomeChannelId) {
-      const channel = member.guild.channels.cache.get(welcomeChannelId);
+    // Welcome message from Supabase
+    const welcome = await getGuildConfig(member.guild.id, 'welcome');
+    if (welcome?.channel_id) {
+      const channel = member.guild.channels.cache.get(welcome.channel_id);
       if (channel) {
-        await channel.send({
-          content: `Willkommen ${member}! 👋 Schau dich um und habe Spaß!`,
-          allowedMentions: { users: [member.id] }
-        });
+        const message = welcome.message?.replace('{user}', `<@${member.id}>`) || `Willkommen ${member}!`;
+        await channel.send(message);
       }
     }
 
-    // Auto role
-    const autoroles = loadAutoroles();
-    const roleId = autoroles[member.guild.id];
-
-    if (roleId) {
-      const role = member.guild.roles.cache.get(roleId);
+    // Auto role from Supabase
+    const autorole = await getGuildConfig(member.guild.id, 'autorole');
+    if (autorole?.role_id) {
+      const role = member.guild.roles.cache.get(autorole.role_id);
       if (role) {
         await member.roles.add(role);
       }

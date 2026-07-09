@@ -1,0 +1,21 @@
+<h2 class="text-2xl mb-4">Logging Settings</h2>
+<form class="bg-gray-800 p-6 rounded-lg" data-endpoint="/api/logging/<%= guildId %>">
+  <div class="mb-4">
+    <label class="block mb-2">Log Channel ID</label>
+    <input type="text" name="channel_id" class="w-full p-2 bg-gray-700 rounded" placeholder="z.B. 123456789">
+  </div>
+  <button type="submit" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Speichern</button>
+</form>
+<script>
+fetch('/api/logging/<%= guildId %>')
+  .then(r => r.json())
+  .then(data => document.querySelector('[name="channel_id"]').value = data.channel_id || '');
+document.querySelector('form').addEventListener('submit', e => {
+  e.preventDefault();
+  fetch(e.target.dataset.endpoint, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+  }).then(() => alert('Gespeichert!'));
+});
+</script>

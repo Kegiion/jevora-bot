@@ -1,0 +1,28 @@
+<h2 class="text-2xl mb-4">Active Giveaways</h2>
+<p class="text-gray-400 mb-4">Giveaways werden über Discord-Befehle gestartet.</p>
+<table class="w-full bg-gray-800 rounded-lg" id="giveaways-table">
+  <thead>
+    <tr class="border-b border-gray-700">
+      <th class="p-3 text-left">Preis</th>
+      <th class="p-3 text-left">Gwinner</th>
+      <th class="p-3 text-left">Endet</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+<script>
+fetch('/api/giveaways/<%= guildId %>')
+  .then(r => r.json())
+  .then(giveaways => {
+    const tbody = document.querySelector('#giveaways-table tbody');
+    giveaways.forEach(g => {
+      const tr = document.createElement('tr');
+      const end = new Date(g.end_time);
+      tr.innerHTML = `<td class="p-3">${g.prize}</td><td class="p-3">${g.winners}</td><td class="p-3">${end.toLocaleString()}</td>`;
+      tbody.appendChild(tr);
+    });
+    if (giveaways.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="p-3 text-center text-gray-400">Keine aktiven Giveaways</td></tr>';
+    }
+  });
+</script>

@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const giveawayManager = require('./giveawayManager');
 require('dotenv').config();
 
 const client = new Client({
@@ -35,7 +36,7 @@ if (fs.existsSync(eventsPath)) {
     const filePath = path.join(eventsPath, file);
     const event = require(filePath);
     if (event.once) {
-      client.once(event.name, (...args) => event.execute(...args));
+      client.once(event.name, (...args) => event.execute(...args, client));
     } else {
       client.on(event.name, (...args) => event.execute(...args));
     }
@@ -44,6 +45,7 @@ if (fs.existsSync(eventsPath)) {
 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
+  giveawayManager.start(client);
 });
 
 client.login(process.env.TOKEN);
