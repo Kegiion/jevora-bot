@@ -1,15 +1,15 @@
-<div class="glass card" style="max-width:600px; margin:0 auto; padding:32px;">
-  <h2 style="font-size:1.75rem; font-weight:bold; color:#a855f7; margin-bottom:24px;">Welcome Einstellungen</h2>
-  <form data-endpoint="/api/welcome/<%= guildId %>" style="display:flex; flex-direction:column; gap:24px;">
+<div class="card" style="max-width:500px; margin:0 auto;">
+  <h2 style="font-size:24px; font-weight:bold; color:#a855f7; margin-bottom:24px;">Welcome Einstellungen</h2>
+  <form data-endpoint="/api/welcome/<%= guildId %>" style="display:flex; flex-direction:column; gap:20px;">
     <div>
       <label style="display:block; font-weight:500; margin-bottom:8px;">Welcome Channel ID</label>
-      <input type="text" name="channel_id" class="glass" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:white;" placeholder="z.B. 123456789">
+      <input type="text" name="channel_id" class="input" placeholder="z.B. 123456789">
     </div>
     <div>
       <label style="display:block; font-weight:500; margin-bottom:8px;">Willkommensnachricht</label>
-      <textarea name="message" class="glass" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:white; min-height:100px;">{user} willkommen!</textarea>
+      <textarea name="message" class="input" rows="3">{user} willkommen!</textarea>
     </div>
-    <button type="submit" class="btn-primary" style="padding:12px 24px; border-radius:8px; border:none; color:white; font-weight:600; cursor:pointer;">Speichern</button>
+    <button type="submit" class="btn-primary">Speichern</button>
   </form>
 </div>
 <script>
