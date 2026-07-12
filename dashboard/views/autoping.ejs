@@ -1,32 +1,44 @@
-<h2 class="text-2xl mb-4">Auto Ping Rules</h2>
-<table class="w-full bg-gray-800 rounded-lg" id="rules-table">
-  <thead>
-    <tr class="border-b border-gray-700">
-      <th class="p-3 text-left">Keyword</th>
-      <th class="p-3 text-left">Role ID</th>
-      <th class="p-3 text-left">Channel ID</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-<form class="mt-4 bg-gray-800 p-4 rounded-lg" data-endpoint="/api/autoping/<%= guildId %>">
-  <div class="grid grid-cols-3 gap-2">
-    <input type="text" name="keyword" placeholder="Keyword" class="p-2 bg-gray-700 rounded" required>
-    <input type="text" name="role_id" placeholder="Role ID" class="p-2 bg-gray-700 rounded" required>
-    <input type="text" name="channel_id" placeholder="Channel ID" class="p-2 bg-gray-700 rounded" required>
+<div class="max-w-4xl mx-auto">
+  <h2 class="text-3xl font-bold neon-purple mb-8">Auto Ping Regeln</h2>
+
+  <div class="glass neon rounded-xl p-6 mb-8">
+    <h3 class="text-xl font-semibold mb-4">Neue Regel hinzufügen</h3>
+    <form class="grid grid-cols-1 md:grid-cols-3 gap-4" data-endpoint="/api/autoping/<%= guildId %>">
+      <input type="text" name="keyword" placeholder="Keyword (z.B. raid)" class="glass rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+      <input type="text" name="role_id" placeholder="Role ID" class="glass rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+      <input type="text" name="channel_id" placeholder="Channel ID" class="glass rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+      <button type="submit" class="md:col-span-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 px-6 py-2 rounded-lg font-semibold transition">Regel hinzufügen</button>
+    </form>
   </div>
-  <button type="submit" class="mt-2 bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Rule</button>
-</form>
+
+  <div class="glass neon rounded-xl p-6">
+    <h3 class="text-xl font-semibold mb-4">Bestehende Regeln</h3>
+    <table class="w-full">
+      <thead>
+        <tr class="border-b border-white/10">
+          <th class="text-left py-3">Keyword</th>
+          <th class="text-left py-3">Role ID</th>
+          <th class="text-left py-3">Channel ID</th>
+        </tr>
+      </thead>
+      <tbody id="rules-body"></tbody>
+    </table>
+  </div>
+</div>
 <script>
 fetch('/api/autoping/<%= guildId %>')
   .then(r => r.json())
   .then(rules => {
-    const tbody = document.querySelector('#rules-table tbody');
+    const tbody = document.getElementById('rules-body');
     rules.forEach(r => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td class="p-3">${r.keyword}</td><td class="p-3">${r.role_id}</td><td class="p-3">${r.channel_id}</td>`;
+      tr.className = 'border-b border-white/5';
+      tr.innerHTML = '<td class="py-3">' + r.keyword + '</td><td class="py-3">' + r.role_id + '</td><td class="py-3">' + r.channel_id + '</td>';
       tbody.appendChild(tr);
     });
+    if (rules.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="py-4 text-center text-gray-400">Keine Regeln vorhanden</td></tr>';
+    }
   });
 document.querySelector('form').addEventListener('submit', e => {
   e.preventDefault();
