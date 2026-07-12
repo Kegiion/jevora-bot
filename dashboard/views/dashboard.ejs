@@ -1,18 +1,13 @@
-<h2 class="text-3xl font-bold neon-purple mb-8">Server auswählen</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<h2 style="font-size:1.75rem; font-weight:bold; color:#a855f7; margin-bottom:32px;">Server auswählen</h2>
+<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:24px;">
   <% user.guilds.forEach(guild => { %>
-    <a href="/dashboard/<%= guild.id %>" class="glass neon rounded-xl p-6 hover:bg-white/10 transition transform hover:-translate-y-1 block">
-      <div class="flex items-center space-x-4">
-        <% if (guild.icon) { %>
-          <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" class="w-12 h-12 rounded-full" alt="<%= guild.name %>">
-        <% } else { %>
-          <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center font-bold"><%= guild.name.charAt(0) %></div>
-        <% } %>
-        <div>
-          <h3 class="text-xl font-semibold"><%= guild.name %></h3>
-          <p class="text-gray-400 text-sm">ID: <%= guild.id %></p>
-        </div>
-      </div>
+    <a href="/dashboard/<%= guild.id %>" class="glass card" style="padding:24px; text-decoration:none; color:inherit; transition:transform 0.2s;">
+      <% if (guild.icon) { %>
+        <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" style="width:48px; height:48px; border-radius:50%; margin-bottom:16px;">
+      <% } else { %>
+        <div class="card" style="width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; margin-bottom:16px;"><%= guild.name.charAt(0) %></div>
+      <% } %>
+      <h3 style="font-size:1.25rem; font-weight:600;"><%= guild.name %></h3>
     </a>
   <% }) %>
 </div>
