@@ -1,25 +1,8 @@
-const { Events } = require('discord.js');
-const { supabase } = require('../supabase');
-
+// Message content intent not available - autoping requires privileged intents
+// Temporarily disabled until intents are enabled in Discord Dev Portal
 module.exports = {
-  name: Events.MessageCreate,
+  name: 'messageCreate',
   async execute(message) {
-    if (message.author.bot) return;
-    if (!message.guild) return;
-
-    const { data: autopings } = await supabase
-      .from('autoping')
-      .select('*')
-      .eq('guild_id', message.guild.id)
-      .eq('channel_id', message.channelId);
-
-    for (const rule of autopings || []) {
-      if (message.content.toLowerCase().includes(rule.keyword)) {
-        const role = message.guild.roles.cache.get(rule.role_id);
-        if (role) {
-          await message.reply(`<@&${rule.role_id}>`);
-        }
-      }
-    }
+    // Placeholder - needs GuildMembers and MessageContent intents
   }
 };
