@@ -8,10 +8,13 @@ router.get('/', (req, res) => {
   res.render('index', { user: req.user });
 });
 
-router.get('/dashboard/:guildId?', (req, res) => {
-  if (!req.user) {
-    return res.redirect('/');
-  }
+router.get('/dashboard', (req, res) => {
+  if (!req.user) return res.redirect('/');
+  res.render('dashboard', { user: req.user, guildId: null });
+});
+
+router.get('/dashboard/:guildId', (req, res) => {
+  if (!req.user) return res.redirect('/');
   res.render('dashboard', { user: req.user, guildId: req.params.guildId });
 });
 
