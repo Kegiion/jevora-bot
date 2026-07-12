@@ -4,32 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jevora Dashboard</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-      min-height: 100vh;
-      color: #fff;
-    }
-    .glass { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
-    .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px; }
-    .btn-primary { background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); color: white; padding: 12px 24px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
-    .btn-primary:hover { opacity: 0.9; }
-    .input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; border-radius: 8px; width: 100%; }
-  </style>
 </head>
-<body>
+<body style="margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%); min-height:100vh; color:white;">
   <nav style="background:rgba(30,41,59,0.3); backdrop-filter:blur(10px); border-bottom:1px solid rgba(255,255,255,0.05); padding:16px 24px; display:flex; justify-content:space-between; align-items:center;">
     <div style="display:flex; align-items:center; gap:12px;">
-      <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, #a855f7, #3b82f6); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:20px;">J</div>
-      <h1 style="font-size:24px; font-weight:bold;">Jevora <span style="color:#a855f7;">Dashboard</span></h1>
+      <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,#a855f7,#3b82f6); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:20px;">J</div>
+      <h1 style="font-size:24px; font-weight:bold; margin:0;">Jevora <span style="color:#a855f7;">Dashboard</span></h1>
     </div>
     <% if (user) { %>
       <div style="display:flex; align-items:center; gap:16px;">
         <span style="color:#d1d5e0;">Hi, <%= user.username %></span>
-        <form action="/auth/logout" method="POST"><button class="btn-primary">Logout</button></form>
+        <form action="/auth/logout" method="POST"><button style="background:linear-gradient(135deg,#8b5cf6,#3b82f6); color:white; padding:8px 16px; border-radius:8px; border:none; font-weight:600; cursor:pointer;">Logout</button></form>
       </div>
     <% } %>
   </nav>
