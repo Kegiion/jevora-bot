@@ -4,7 +4,7 @@ const passport = require('passport');
 const { Strategy } = require('passport-discord');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 
 const app = express();
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
@@ -41,4 +41,5 @@ app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api'));
 
-app.listen(3000, () => console.log('Dashboard running on http://localhost:3000'));
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Dashboard running on http://localhost:${PORT}`));
