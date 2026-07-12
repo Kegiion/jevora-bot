@@ -1,24 +1,24 @@
-<div class="max-w-4xl mx-auto">
-  <h2 class="text-3xl font-bold neon-purple mb-8">Auto Ping Regeln</h2>
+<div class="card" style="max-width:800px; margin:0 auto;">
+  <h2 style="font-size:24px; font-weight:bold; color:#a855f7; margin-bottom:24px;">Auto Ping Regeln</h2>
 
-  <div class="glass neon rounded-xl p-6 mb-8">
-    <h3 class="text-xl font-semibold mb-4">Neue Regel hinzufügen</h3>
-    <form class="grid grid-cols-1 md:grid-cols-3 gap-4" data-endpoint="/api/autoping/<%= guildId %>">
-      <input type="text" name="keyword" placeholder="Keyword (z.B. raid)" class="glass rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-      <input type="text" name="role_id" placeholder="Role ID" class="glass rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-      <input type="text" name="channel_id" placeholder="Channel ID" class="glass rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-      <button type="submit" class="md:col-span-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 px-6 py-2 rounded-lg font-semibold transition">Regel hinzufügen</button>
+  <div class="card" style="margin-bottom:24px; padding:20px;">
+    <h3 style="font-size:18px; font-weight:600; margin-bottom:16px;">Neue Regel hinzufügen</h3>
+    <form data-endpoint="/api/autoping/<%= guildId %>" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+      <input type="text" name="keyword" placeholder="Keyword" class="input" required>
+      <input type="text" name="role_id" placeholder="Role ID" class="input" required>
+      <input type="text" name="channel_id" placeholder="Channel ID" class="input" required>
+      <button type="submit" class="btn-primary" style="grid-column:span 3;">Hinzufügen</button>
     </form>
   </div>
 
-  <div class="glass neon rounded-xl p-6">
-    <h3 class="text-xl font-semibold mb-4">Bestehende Regeln</h3>
-    <table class="w-full">
+  <div class="card" style="padding:20px;">
+    <h3 style="font-size:18px; font-weight:600; margin-bottom:16px;">Bestehende Regeln</h3>
+    <table style="width:100%; border-collapse:collapse;">
       <thead>
-        <tr class="border-b border-white/10">
-          <th class="text-left py-3">Keyword</th>
-          <th class="text-left py-3">Role ID</th>
-          <th class="text-left py-3">Channel ID</th>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+          <th style="text-align:left; padding:12px;">Keyword</th>
+          <th style="text-align:left; padding:12px;">Role ID</th>
+          <th style="text-align:left; padding:12px;">Channel ID</th>
         </tr>
       </thead>
       <tbody id="rules-body"></tbody>
@@ -26,20 +26,18 @@
   </div>
 </div>
 <script>
-fetch('/api/autoping/<%= guildId %>')
-  .then(r => r.json())
-  .then(rules => {
-    const tbody = document.getElementById('rules-body');
-    rules.forEach(r => {
-      const tr = document.createElement('tr');
-      tr.className = 'border-b border-white/5';
-      tr.innerHTML = '<td class="py-3">' + r.keyword + '</td><td class="py-3">' + r.role_id + '</td><td class="py-3">' + r.channel_id + '</td>';
-      tbody.appendChild(tr);
-    });
-    if (rules.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" class="py-4 text-center text-gray-400">Keine Regeln vorhanden</td></tr>';
-    }
+fetch('/api/autoping/<%= guildId %>').then(r => r.json()).then(rules => {
+  const tbody = document.getElementById('rules-body');
+  rules.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+    tr.innerHTML = '<td style="padding:12px;">' + r.keyword + '</td><td style="padding:12px;">' + r.role_id + '</td><td style="padding:12px;">' + r.channel_id + '</td>';
+    tbody.appendChild(tr);
   });
+  if (rules.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="padding:16px; text-align:center; color:#94a3b8;">Keine Regeln vorhanden</td></tr>';
+  }
+});
 document.querySelector('form').addEventListener('submit', e => {
   e.preventDefault();
   fetch(e.target.dataset.endpoint, {
