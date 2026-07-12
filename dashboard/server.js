@@ -41,5 +41,5 @@ app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api'));
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;
 app.listen(PORT, () => console.log(`Dashboard running on http://localhost:${PORT}`));
